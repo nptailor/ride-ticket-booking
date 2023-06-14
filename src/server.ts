@@ -15,6 +15,7 @@ const port = 3000;
 
 //getting the number of cores
 const numCPUs = cpus().length;
+console.log({ numCPUs })
 
 // creating clusters
 if (cluster.isPrimary) {
@@ -31,15 +32,12 @@ if (cluster.isPrimary) {
 } else {
   // workers can share any TCP connection
   // in this case it is an HTTP server
-  http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('hello world\n');
-  }).listen(port);
+  app.listen(port, () => {
+    return console.log(`Worker is listening at http://localhost:${port}`);
+  })
 
   console.log(`Worker ${process.pid} started`);
 }
-
-
 app.use(json());  // registering this middleware for accepting json requests
 app.use(express.urlencoded({ limit: '3000mb', extended: false }));
 
@@ -51,7 +49,7 @@ app.use('/user', userRoutes);// This means all route path precede this path
 
 
 
-// Below is triggered when any error is thrown and not caught
+// Below route is triggered when any error is thrown
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: err.message });
 });
