@@ -42,9 +42,9 @@ app.use(express.urlencoded({ limit: '3000mb', extended: false }));
 
 
 // Routes
-app.use('/ride', rideRoutes);// This means all route path precede this path
-app.use('/ticket', ticketRoutes);// This means all route path precede this path
-app.use('/user', userRoutes);// This means all route path precede this path
+app.use('/ride', rideRoutes);// This means all route path precede ride path
+app.use('/ticket', ticketRoutes);// This means all route path precede ticket path
+app.use('/user', userRoutes);// This means all route path precede user path
 
 
 
