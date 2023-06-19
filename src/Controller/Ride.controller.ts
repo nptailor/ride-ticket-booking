@@ -4,8 +4,12 @@ import { Ride } from '../Models/Rides';
 // create a new ride
 export const addRide: RequestHandler = async (req, res, next) => {
 	console.log({body: req.body})
-	const newRide = await new Ride(req.body).save();
-	res.status(200).json({code: "success", body: newRide})
+	new Ride(req.body).save().then((newRide)=>{
+		res.status(200).json({code: "success", ride: newRide})
+	}).catch(err =>{
+		console.log(err);
+		res.status(409).json({code: "error", message: "Error creating Ride."})
+	})
 };
 
 // find a ride

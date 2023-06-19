@@ -1,6 +1,5 @@
 import express, { Express, Request, Response, NextFunction, json } from 'express';
 import cluster from 'cluster';
-import * as http from 'http';
 import { cpus } from 'os';
 import process from 'process';
 import * as dbConnection from './database-connection';

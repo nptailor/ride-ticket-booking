@@ -1,4 +1,4 @@
-import mongoose,{ Schema } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface IRide extends Document {
@@ -6,21 +6,23 @@ export interface IRide extends Document {
 	name: String;
 	code: String;
 	seatsPerDay: Number;
+	availableSeats: number;
 	rideTimings: [{
 		startTime: String;
 		endTime: String;
 	}],
-	bookingtiming: {
+	bookingTiming: {
 		startTime: String,
 		endTime: String
 	}
-  }
-  
-const RideSchema: Schema = new Schema({
-	_id: { type: String, default: uuidv4},
-	name: { type: String, trim: true, require: true },
-	code: { type: String, trim: true, require: true },
-	seatsPerDay: { type: Number, trim: true, require: true },
+}
+
+const RideSchema: Schema = new Schema<IRide>({
+	_id: { type: String, default: uuidv4 },
+	name: { type: String, trim: true, required: true },
+	code: { type: String, trim: true, required: true },
+	seatsPerDay: { type: Number, required: true },
+	availableSeats: { type: Number, required: true, min: [0, "No seats available."]},
 	rideTimings: [{
 		startTime: { type: String, trim: true },
 		endTime: { type: String, trim: true }
@@ -29,8 +31,9 @@ const RideSchema: Schema = new Schema({
 		startTime: { type: String, trim: true },
 		endTime: { type: String, trim: true }
 	}
-},{
-    timestamps: true
+}, {
+	timestamps: true
 });
 
-export const Ride = mongoose.model<IRide>('Ride', RideSchema);
+
+export const Ride = model<IRide>('Ride', RideSchema);
